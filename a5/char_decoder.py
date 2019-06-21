@@ -28,8 +28,11 @@ class CharDecoder(nn.Module):
         ###       - Set the padding_idx argument of the embedding matrix.
         ###       - Create a new Embedding layer. Do not reuse embeddings created in Part 1 of this assignment.
         super(CharDecoder, self).__init__()
-        self.charDecoder = nn.LSTM()
-        
+        self.charDecoder = nn.LSTM(char_embedding_size, hidden_size)
+        self.target_vocab = target_vocab.char2id
+        self.char_output_projection = nn.Linear(hidden_size,len(self.target_vocab))
+        pad_token_idx = target_vocab.char2id['<pad>']
+        self.decoderCharEmb = nn.Embedding(len(self.target_vocab),char_embedding_size,padding_idx=pad_token_idx)
 
         ### END YOUR CODE
 
